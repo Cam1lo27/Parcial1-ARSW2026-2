@@ -34,6 +34,8 @@ Para 'refactorizar' este código, y hacer que explote la capacidad multi-núcleo
 
 1. Cree una clase de tipo Thread que represente el ciclo de vida de un hilo que haga la búsqueda de un segmento del conjunto de servidores disponibles.
 
+![primer punto](img/primerpunto.png)
+
 2. Agregue al método 'checkHost' un parámetro entero N, correspondiente al número de hilos entre los que se va a realizar la búsqueda (recuerde tener en cuenta si N es par o impar!). Modifique el código de este método para que divida el espacio de búsqueda entre las N partes indicadas, y paralelice la búsqueda a través de N hilos.
 
 3. Haga que entre TODOS los hilos lleven la cuenta de las ocurrencias de la IP que se han detectado en TOTAL y una vez se cumpla el número objetivo (_BLACK_LIST_ALARM_COUNT_), deben finalizar el procesamiento TODOS los hilos, luego debe reportar el host como confiable o no confiable. Tenga también en cuenta:  
