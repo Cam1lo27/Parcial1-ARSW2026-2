@@ -39,15 +39,16 @@ public class HostBlackListsValidator {
 
         BlackListSearchThread[] threads=new BlackListSearchThread[n];
 
+        OccurrencesCounter totalOccurrences=new OccurrencesCounter();
+
         int start=0;
         for (int i=0;i<n;i++){
             int end=(i==n-1)?totalServers:start+segmentSize;
-            threads[i]=new BlackListSearchThread(skds, ipaddress, start, end);
+            threads[i]=new BlackListSearchThread(skds, ipaddress, start, end, totalOccurrences, BLACK_LIST_ALARM_COUNT);
             threads[i].start();
             start=end;
         }
 
-        int ocurrencesCount=0;
         for (BlackListSearchThread t:threads){
             try {
                 t.join();
@@ -55,8 +56,9 @@ public class HostBlackListsValidator {
                 Thread.currentThread().interrupt();
             }
             blackListOcurrences.addAll(t.getOccurrences());
-            ocurrencesCount+=t.getOccurrences().size();
         }
+
+        int ocurrencesCount=totalOccurrences.get();
 
         if (ocurrencesCount>=BLACK_LIST_ALARM_COUNT){
             skds.reportAsNotTrustworthy(ipaddress);
